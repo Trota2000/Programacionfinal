@@ -302,7 +302,7 @@ python manage.py makemigrations
 python manage.py migrate
 
 ```
-10. Ejecutar el servidor
+### 10. Ejecutar el servidor
 Ejecuta el servidor para probar la aplicación:
 
 ```bash
@@ -343,6 +343,57 @@ POST http://127.0.0.1:8000/api/auth/login/
 GET http://localhost:8000/api/libros/
 
 ```
+
+## Documentación del 
+
+Este script en Python está diseñado para realizar análisis sobre los registros y valoraciones dentro del sistema de la API Biblioteca. El propósito principal de este script es extraer datos de calificaciones y libros de la base de datos, procesarlos y generar gráficos que ayuden a comprender mejor la información almacenada.
+
+### Funciones del Script
+
+#### 1. `analizar_calificaciones(request)`
+
+Esta función tiene como objetivo analizar las calificaciones de los libros realizadas por los usuarios. Extrae las calificaciones y los libros asociados, realiza un análisis de las calificaciones agrupadas por el año de publicación del libro, y genera un gráfico de barras.
+
+```python
+def analizar_calificaciones(request):
+    try:
+        # Obtener datos de calificaciones y libros
+        calificaciones_data = Calificacion.objects.all().select_related('libro')
+        libros_data = Libro.objects.all()
+
+        # Convertir a DataFrame
+        calificaciones_df = pd.DataFrame(list(calificaciones_data.values('libro', 'puntaje')))
+        libros_df = pd.DataFrame(list(libros_data.values('id', 'nombre', 'autor', 'fecha_lanzamiento', 'genero')))
+
+        # Filtrar las fechas fuera del rango válido
+        libros_df['fecha_lanzamiento'] = pd.to_datetime(libros_df['fecha_lanzamiento'], errors='coerce')  # Convertir las fechas, invalidas se convertirán a NaT
+        libros_df = libros_df.dropna(subset=['fecha_lanzamiento'])  # Eliminar las filas con fechas inválidas (NaT)
+
+        # Merge de calificaciones y libros
+        df = pd.merge(calificaciones_df, libros_df, left_on='libro', right_on='id')
+        df['fecha_lanzamiento'] = pd.to_datetime(df['fecha_lanzamiento'])
+        df['año_publicacion'] = df['fecha_lanzamiento'].dt.year
+
+        # 1. Promedio de calificación por año de publicación
+        promedio_por_ano = df.groupby('año_publicacion')['puntaje'].mean()
+
+        # Crear gráfico del promedio de calificación por año de publicación
+        plt.figure(figsize=(10, 6))
+        promedio_por_ano.plot(kind='bar', color='skyblue')
+        plt.title('Promedio de Calificación por Año de Publicación')
+        plt.xlabel('Año de Publicación')
+        plt.ylabel('Promedio de Calificación')
+
+        # Guardar el gráfico como una imagen en memoria
+        response = HttpResponse(content_type='image/png')
+        plt.savefig(response, format='png')
+        plt.close()
+
+        return response
+
+    except Exception as e:
+        # Si ocurre un error, devolver el mensaje de error
+        return HttpResponse(f"Error: {str(e)}", status=500)
 
 
 
