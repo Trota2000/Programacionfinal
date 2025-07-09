@@ -58,8 +58,9 @@ Abre settings.py dentro de la carpeta biblioteca y agrega las siguientes líneas
 'rest_framework',
 'rest_framework_simplejwt',
 ```
-Configurar la base de datos:
+- Configurar la base de datos:
 En el archivo settings.py, configura la base de datos en PostgreSQL:
+![base de datos](https://github.com/user-attachments/assets/07b54d6a-d26b-4cda-9ba3-eb1ff13ce117)
 ```bash
 DATABASES = {
     'default': {
@@ -312,7 +313,7 @@ python manage.py runserver
 ### 11. Probar la API con Postman
 
 - Registrar un usuario:
-
+![registrar usuarios](https://github.com/user-attachments/assets/4a65a82d-04cb-422c-b7f4-602fae0ca098)
 ```bash
 POST http://127.0.0.1:8000/api/auth/register/
 
@@ -326,6 +327,7 @@ POST http://127.0.0.1:8000/api/auth/register/
 
 ```
 - Iniciar sesión:
+
 ```bash
 POST http://127.0.0.1:8000/api/auth/login/
 
@@ -338,7 +340,9 @@ POST http://127.0.0.1:8000/api/auth/login/
 }
 
 ```
+- Consultar libros:
 
+![consultar libros](https://github.com/user-attachments/assets/aaeac6f3-059a-4d23-aba5-4b1ff0785f01)
 ```bash
 GET http://localhost:8000/api/libros/
 
@@ -481,28 +485,39 @@ def cantidad_libros_por_genero(request):
 ```
 ### Generación y Explicación de Gráficos
 Gráficos generados por el script:
-Promedio de Calificación por Año de Publicación:
+- Promedio de Calificación por Año de Publicación:
 
 Gráfico de barras que muestra el promedio de las calificaciones de los libros agrupados por año de publicación. Este gráfico es útil para ver cómo han sido calificados los libros a lo largo de los años.
-
+![promedio de calificacion](https://github.com/user-attachments/assets/59e793f1-0f70-42bc-bb1b-fbca8bd62e0c)
 Eje X: Año de publicación de los libros.
 
 Eje Y: Promedio de las calificaciones.
 
-Top 5 Libros Mejor Calificados:
+- Top 5 Libros Mejor Calificados:
 
 Gráfico de barras que muestra los 5 libros mejor calificados. Este gráfico permite identificar rápidamente cuáles son los libros más populares en función de las valoraciones de los usuarios.
-
+![top 5 mejores](https://github.com/user-attachments/assets/629aa5c7-98ea-4b47-86b0-87b2c8cf8b8f)
 Eje X: Nombres de los libros.
 
 Eje Y: Promedio de calificación de cada libro.
 
-Cantidad de Libros por Género:
+- Cantidad de Libros por Género:
 
 Gráfico de barras que muestra la cantidad de libros registrados en cada género literario. Este gráfico es útil para ver qué géneros tienen más libros disponibles en la biblioteca.
-
+![Cantidad de libros por genero](https://github.com/user-attachments/assets/23737f52-0061-4739-b8b1-54eaefeff839)
 Eje X: Géneros literarios.
 
 Eje Y: Número de libros en cada género.
 
 Cada gráfico es generado utilizando Matplotlib y los datos se manipulan con Pandas. Los gráficos se guardan como imágenes en formato PNG y se devuelven al usuario en la respuesta HTTP.
+
+
+
+![modificar-actualizar libros](https://github.com/user-attachments/assets/17583110-fb7e-4b3a-8cc5-9926ff410166)
+![insertar libros](https://github.com/user-attachments/assets/76fd3666-4c80-4180-84e3-b916dcdaf519)
+![insertar autores](https://github.com/user-attachments/assets/c8047993-395a-4829-898a-ac9d97df8310)
+![eliminar libros](https://github.com/user-attachments/assets/a78aba45-52b0-4e35-8b6e-5bec5c0a86b4)
+![consultar generos](https://github.com/user-attachments/assets/fac5e7a5-31f6-4ead-8bd0-49a1b818aff5)
+![consultar autores](https://github.com/user-attachments/assets/1f892730-73d7-409c-b98e-0e4b18a8a10d)
+
+
