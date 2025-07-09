@@ -566,7 +566,9 @@ Gráficos generados por el script:
 - Promedio de Calificación por Año de Publicación:
 
 Gráfico de barras que muestra el promedio de las calificaciones de los libros agrupados por año de publicación. Este gráfico es útil para ver cómo han sido calificados los libros a lo largo de los años.
+
 ![promedio de calificacion](https://github.com/user-attachments/assets/59e793f1-0f70-42bc-bb1b-fbca8bd62e0c)
+
 Eje X: Año de publicación de los libros.
 
 Eje Y: Promedio de las calificaciones.
@@ -574,7 +576,9 @@ Eje Y: Promedio de las calificaciones.
 - Top 5 Libros Mejor Calificados:
 
 Gráfico de barras que muestra los 5 libros mejor calificados. Este gráfico permite identificar rápidamente cuáles son los libros más populares en función de las valoraciones de los usuarios.
+
 ![top 5 mejores](https://github.com/user-attachments/assets/629aa5c7-98ea-4b47-86b0-87b2c8cf8b8f)
+
 Eje X: Nombres de los libros.
 
 Eje Y: Promedio de calificación de cada libro.
@@ -582,7 +586,9 @@ Eje Y: Promedio de calificación de cada libro.
 - Cantidad de Libros por Género:
 
 Gráfico de barras que muestra la cantidad de libros registrados en cada género literario. Este gráfico es útil para ver qué géneros tienen más libros disponibles en la biblioteca.
+
 ![Cantidad de libros por genero](https://github.com/user-attachments/assets/23737f52-0061-4739-b8b1-54eaefeff839)
+
 Eje X: Géneros literarios.
 
 Eje Y: Número de libros en cada género.
