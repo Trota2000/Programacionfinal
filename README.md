@@ -104,6 +104,46 @@ Asegúrate de importar timedelta en el archivo settings.py:
 from datetime import timedelta
 
 ```
+### 7. Crear las aplicaciones de Django
+Entra a la carpeta del proyecto y crea las aplicaciones necesarias:
+
+```bash
+cd biblioteca
+django-admin startapp accounts
+django-admin startapp libros
+```
+### 8. Configurar las aplicaciones
+App accounts
+Crear serializers.py:
+
+En la carpeta accounts, crea un archivo serializers.py con el siguiente código:
+
+```bash
+from django.contrib.auth.models import User
+from rest_framework import serializers
+
+class RegisterSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+
+    class Meta:
+        model = User
+        fields = ['username', 'password', 'email']
+
+    def create(self, validated_data):
+        user = User.objects.create_user(
+            username=validated_data['username'],
+            email=validated_data.get('email'),
+            password=validated_data['password']
+        )
+        return user
+
+```
+- Crear views.py:
+
+En views.py de la aplicación accounts, crea la vista de registro de usuario:
+
+
+
 
 
 
