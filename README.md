@@ -598,7 +598,20 @@ Cada gráfico es generado utilizando Matplotlib y los datos se manipulan con Pan
 
 
 
+#### Licencia
+Este proyecto está licenciado bajo los términos de la Licencia MIT. Puedes usar, copiar, modificar y distribuir este software con fines comerciales o no comerciales, siempre que mantengas el aviso de copyright original y esta licencia.
 
+## Permiso
+Se otorgan a los usuarios los siguientes permisos:
+
+Usar el software para cualquier propósito.
+
+Modificar el software y distribuir versiones modificadas del software.
+
+Distribuir copias del software.
+
+## Limitaciones
+No se otorgan derechos sobre la propiedad intelectual de terceros. El software se proporciona "tal cual", sin ninguna garantía expresa o implícita, incluyendo pero no limitándose a las garantías de comerciabilidad y adecuación para un propósito particular. En ningún caso el autor o los titulares de los derechos de autor serán responsables de cualquier reclamación, daño o cualquier otra responsabilidad, ya sea en una acción de contrato, agravio o de otro tipo, derivada de, o en conexión con el software o el uso del software.
 
 
 
