@@ -344,7 +344,7 @@ GET http://localhost:8000/api/libros/
 
 ```
 
-## Documentación del 
+## Documentación del analisis
 
 Este script en Python está diseñado para realizar análisis sobre los registros y valoraciones dentro del sistema de la API Biblioteca. El propósito principal de este script es extraer datos de calificaciones y libros de la base de datos, procesarlos y generar gráficos que ayuden a comprender mejor la información almacenada.
 
@@ -394,7 +394,115 @@ def analizar_calificaciones(request):
     except Exception as e:
         # Si ocurre un error, devolver el mensaje de error
         return HttpResponse(f"Error: {str(e)}", status=500)
+```
+
+#### 2. top_libros_calificados(request)
+Esta función calcula y muestra los 5 libros mejor calificados por los usuarios. Para esto, agrupa los libros por el puntaje promedio de las calificaciones, ordenándolos de mayor a menor.
+
+```python
+def top_libros_calificados(request):
+    try:
+        # Obtener datos de calificaciones y libros
+        calificaciones_data = Calificacion.objects.all().select_related('libro')
+        libros_data = Libro.objects.all()
+
+        # Convertir a DataFrame
+        calificaciones_df = pd.DataFrame(list(calificaciones_data.values('libro', 'puntaje')))
+        libros_df = pd.DataFrame(list(libros_data.values('id', 'nombre', 'autor', 'fecha_lanzamiento', 'genero')))
+
+        # Merge de calificaciones y libros
+        df = pd.merge(calificaciones_df, libros_df, left_on='libro', right_on='id')
+
+        # Calcular el Top 5 libros mejor calificados
+        top_libros = df.groupby('nombre')['puntaje'].mean().sort_values(ascending=False).head(5)
+
+        # Crear gráfico del Top 5 libros mejor calificados
+        plt.figure(figsize=(10, 6))
+        top_libros.plot(kind='bar', color='orange')
+        plt.title('Top 5 Libros Mejor Calificados')
+        plt.xlabel('Libro')
+        plt.ylabel('Promedio de Calificación')
+
+        # Guardar el gráfico como una imagen en memoria
+        response = HttpResponse(content_type='image/png')
+        plt.savefig(response, format='png')
+        plt.close()
+
+        return response
+
+    except Exception as e:
+        # Si ocurre un error, devolver el mensaje de error
+        return HttpResponse(f"Error: {str(e)}", status=500)
 
 
+```
+#### 3. cantidad_libros_por_genero(request)
+Esta función muestra la cantidad de libros por género literario. Se agrupan los libros según su género y se genera un gráfico de barras que muestra la cantidad de libros por cada género.
 
+```python
 
+def cantidad_libros_por_genero(request):
+    try:
+        # Obtener datos de libros y géneros
+        libros_data = Libro.objects.all().select_related('genero')  # Usamos select_related para obtener el nombre del género
+        generos_data = Genero.objects.all()  # Obtener los géneros para usarlos en el gráfico
+
+        # Convertir a DataFrame
+        libros_df = pd.DataFrame(list(libros_data.values('id', 'nombre', 'autor', 'fecha_lanzamiento', 'genero')))
+        generos_df = pd.DataFrame(list(generos_data.values('id', 'nombre')))  # Datos de géneros
+
+        # Hacer un merge entre libros y géneros usando el id del género
+        df = pd.merge(libros_df, generos_df, how='left', left_on='genero', right_on='id')
+
+        # Renombrar las columnas para evitar conflictos
+        df.rename(columns={'nombre_x': 'nombre_libro', 'nombre_y': 'nombre_genero'}, inplace=True)
+
+        # Contar la cantidad de libros por género
+        cantidad_por_genero = df.groupby('nombre_genero')['nombre_libro'].count().sort_values(ascending=False)
+
+        # Crear gráfico de cantidad de libros por género
+        plt.figure(figsize=(10, 6))
+        cantidad_por_genero.plot(kind='bar', color='salmon')
+        plt.title('Cantidad de Libros por Género')
+        plt.xlabel('Género')
+        plt.ylabel('Cantidad de Libros')
+
+        # Guardar el gráfico como una imagen en memoria
+        response = HttpResponse(content_type='image/png')
+        plt.savefig(response, format='png')
+        plt.close()
+
+        return response
+
+    except Exception as e:
+        # Si ocurre un error, devolver el mensaje de error
+        return HttpResponse(f"Error: {str(e)}", status=500)
+
+```
+### Generación y Explicación de Gráficos
+Gráficos generados por el script:
+Promedio de Calificación por Año de Publicación:
+
+Gráfico de barras que muestra el promedio de las calificaciones de los libros agrupados por año de publicación. Este gráfico es útil para ver cómo han sido calificados los libros a lo largo de los años.
+
+Eje X: Año de publicación de los libros.
+
+Eje Y: Promedio de las calificaciones.
+
+Top 5 Libros Mejor Calificados:
+
+Gráfico de barras que muestra los 5 libros mejor calificados. Este gráfico permite identificar rápidamente cuáles son los libros más populares en función de las valoraciones de los usuarios.
+
+Eje X: Nombres de los libros.
+
+Eje Y: Promedio de calificación de cada libro.
+
+Cantidad de Libros por Género:
+
+Gráfico de barras que muestra la cantidad de libros registrados en cada género literario. Este gráfico es útil para ver qué géneros tienen más libros disponibles en la biblioteca.
+
+Eje X: Géneros literarios.
+
+Eje Y: Número de libros en cada género.
+
+Cada gráfico es generado utilizando Matplotlib y los datos se manipulan con Pandas. Los gráficos se guardan como imágenes en formato PNG y se devuelven al usuario en la respuesta HTTP.
