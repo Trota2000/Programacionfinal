@@ -143,7 +143,205 @@ class RegisterSerializer(serializers.ModelSerializer):
 En views.py de la aplicación accounts, crea la vista de registro de usuario:
 
 
+```bash
+from rest_framework import generics
+from django.contrib.auth.models import User
+from .serializers import RegisterSerializer
+from rest_framework.permissions import AllowAny
 
+class RegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    permission_classes = [AllowAny]
+    serializer_class = RegisterSerializer
+
+```
+- Crear urls.py:
+
+En la carpeta accounts, crea un archivo urls.py con el siguiente código:
+
+```bash
+from django.urls import path
+from .views import RegisterView
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+
+urlpatterns = [
+    path('register/', RegisterView.as_view(), name='register'),
+    path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+]
+
+```
+
+- Modificar urls.py en biblioteca:
+
+En el archivo biblioteca/urls.py, agrega la URL de accounts:
+
+```bash
+from django.urls import path, include
+
+urlpatterns = [
+    path('api/auth/', include('accounts.urls')),
+    # otras rutas...
+]
+
+```
+- App libros
+Crear models.py:
+
+En la carpeta libros, crea el archivo models.py con el siguiente código:
+```bash
+from django.db import models
+from django.contrib.auth.models import User
+
+class Autor(models.Model):
+    nombre = models.CharField(max_length=100)
+    nacionalidad = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.nombre
+
+class Genero(models.Model):
+    nombre = models.CharField(max_length=100, unique=True)
+    
+    def __str__(self):
+        return self.nombre
+    
+class Libro(models.Model):
+    nombre = models.CharField(max_length=200)
+    autor = models.ForeignKey(Autor, on_delete=models.CASCADE, related_name='libros')
+    fecha_lanzamiento = models.DateField()
+    genero = models.ForeignKey(Genero, on_delete=models.CASCADE, related_name='libros')
+    url_libro = models.CharField(max_length=200, null=True, blank=True)
+
+    def __str__(self):
+        return self.nombre
+
+class Calificacion(models.Model):
+    libro = models.ForeignKey(Libro, on_delete=models.CASCADE, related_name='calificaciones')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    puntaje = models.FloatField()
+
+    def __str__(self):
+        return f"{self.user.username} - {self.libro.nombre}: {self.puntaje}"
+
+```
+- Crear views.py:
+
+En views.py de la app libros, crea las vistas de los libros y calificaciones:
+
+```bash
+from django.shortcuts import render
+from rest_framework import viewsets
+from .models import Autor, Libro, Calificacion, Genero
+from rest_framework.permissions import IsAuthenticated
+from .serializers import AutorSerializer, LibroSerializer, CalificacionSerializer, GeneroSerializer
+
+class AutorViewSet(viewsets.ModelViewSet):
+    queryset = Autor.objects.all()
+    serializer_class = AutorSerializer
+    permission_classes = [IsAuthenticated]
+
+class LibroViewSet(viewsets.ModelViewSet):
+    queryset = Libro.objects.all()
+    serializer_class = LibroSerializer
+    permission_classes = [IsAuthenticated]
+
+class CalificacionViewSet(viewsets.ModelViewSet):
+    queryset = Calificacion.objects.all()
+    serializer_class = CalificacionSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return Calificacion.objects.filter(user=user)
+
+class GeneroViewSet(viewsets.ModelViewSet):
+    queryset = Genero.objects.all()
+    serializer_class = GeneroSerializer
+    permission_classes = [IsAuthenticated]
+
+```
+- Crear urls.py:
+
+En la carpeta libros, crea un archivo urls.py con el siguiente código:
+
+```bash
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import AutorViewSet, LibroViewSet, CalificacionViewSet
+
+router = DefaultRouter()
+router.register(r'autores', AutorViewSet)
+router.register(r'libros', LibroViewSet)
+router.register(r'calificaciones', CalificacionViewSet)
+
+urlpatterns = [
+    path('', include(router.urls)),
+]
+
+```
+- Modificar biblioteca/urls.py:
+
+Agrega las rutas para las vistas de libros:
+
+```bash
+from django.urls import path, include
+
+urlpatterns = [
+    path('api/auth/', include('accounts.urls')),
+    path('api/libros/', include('libros.urls')),
+]
+
+```
+
+### 9. Realizar las migraciones
+Realiza las migraciones para crear las tablas en la base de datos:
+
+```bash
+python manage.py makemigrations
+python manage.py migrate
+
+```
+10. Ejecutar el servidor
+Ejecuta el servidor para probar la aplicación:
+
+```bash
+python manage.py runserver
+
+```
+### 11. Probar la API con Postman
+Registrar un usuario:
+
+```bash
+POST http://127.0.0.1:8000/api/auth/register/
+
+```
+```bash
+{
+    "username": "DiegoTroche",
+    "password": "123456",
+    "email": "diegotroche2000@gmail.com"
+}
+
+```
+Iniciar sesión:
+```bash
+POST http://127.0.0.1:8000/api/auth/login/
+
+```|
+
+```bash
+{
+    "username": "DiegoTroche",
+    "password": "123456"
+}
+
+```
+
+```bash
+GET http://localhost:8000/api/libros/
+
+```
 
 
 
