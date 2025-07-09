@@ -14,12 +14,12 @@ Primero, crea una carpeta para tu proyecto. Puedes llamarla **Biblioteca** o el 
 mkdir Biblioteca
 cd Biblioteca
 ```
-2. Crear un entorno virtual
+###2. Crear un entorno virtual
 Entra en la carpeta del proyecto y crea un entorno virtual con el siguiente comando:
 ```bash
 python -m venv venv
 ```
-3. Activar el entorno virtual
+###3. Activar el entorno virtual
 Una vez creado el entorno virtual, actívalo con:
 
 Windows:
@@ -43,6 +43,7 @@ pip install djangorestframework  # Proporciona herramientas para construir APIs 
 
 # Instalar Simple JWT
 pip install djangorestframework-simplejwt  # Proporciona autenticación con tokens JWT para la API.
+```
 
 
 
