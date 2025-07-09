@@ -310,7 +310,8 @@ python manage.py runserver
 
 ```
 ### 11. Probar la API con Postman
-Registrar un usuario:
+
+- Registrar un usuario:
 
 ```bash
 POST http://127.0.0.1:8000/api/auth/register/
@@ -324,7 +325,7 @@ POST http://127.0.0.1:8000/api/auth/register/
 }
 
 ```
-Iniciar sesión:
+- Iniciar sesión:
 ```bash
 POST http://127.0.0.1:8000/api/auth/login/
 
