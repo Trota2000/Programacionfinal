@@ -348,6 +348,84 @@ GET http://localhost:8000/api/libros/
 
 ```
 
+- Insertar libro:
+![insertar libros](https://github.com/user-attachments/assets/76fd3666-4c80-4180-84e3-b916dcdaf519)
+```bash
+POST http://127.0.0.1:8000/api/libros/crear/
+
+```
+
+```bash
+{
+    "nombre": "Libro de Prueba",
+    "fecha_lanzamiento": "2023-01-01",
+    "url_libro": "http://url-del-libro.com",
+    "autor": 1,
+    "genero": 2
+}
+
+```
+- Eliminar libro:
+![eliminar libros](https://github.com/user-attachments/assets/a78aba45-52b0-4e35-8b6e-5bec5c0a86b4)
+
+```bash
+
+```
+```bash
+DELETE http://127.0.0.1:8000/api/libros/1/eliminar/
+
+```
+Nota: Cambia el 1 en la URL por el ID del libro que deseas eliminar.
+
+- Actualizar libro:
+![modificar-actualizar libros](https://github.com/user-attachments/assets/17583110-fb7e-4b3a-8cc5-9926ff410166)
+
+```bash
+PUT http://127.0.0.1:8000/api/libros/1/actualizar/
+
+```
+```bash
+{
+    "nombre": "Libro de Prueba Modificado",
+    "fecha_lanzamiento": "2023-02-01",
+    "url_libro": "http://url-modificado.com",
+    "autor": 2,
+    "genero": 3
+}
+
+```
+- Consultar autores:
+![consultar autores](https://github.com/user-attachments/assets/1f892730-73d7-409c-b98e-0e4b18a8a10d)
+
+```bash
+GET http://127.0.0.1:8000/api/autores/
+
+```
+- Ingresar autor:
+![insertar autores](https://github.com/user-attachments/assets/c8047993-395a-4829-898a-ac9d97df8310)
+
+```bash
+POST http://127.0.0.1:8000/api/autores/crear/
+
+```
+
+```bash
+{
+    "nombre": "Autor de Prueba",
+    "nacionalidad": "Paraguaya"
+}
+
+```
+- Consultar géneros:
+![consultar generos](https://github.com/user-attachments/assets/fac5e7a5-31f6-4ead-8bd0-49a1b818aff5)
+
+```bash
+GET http://127.0.0.1:8000/api/generos/
+
+```
+
+
+
 ## Documentación del analisis
 
 Este script en Python está diseñado para realizar análisis sobre los registros y valoraciones dentro del sistema de la API Biblioteca. El propósito principal de este script es extraer datos de calificaciones y libros de la base de datos, procesarlos y generar gráficos que ayuden a comprender mejor la información almacenada.
@@ -513,11 +591,11 @@ Cada gráfico es generado utilizando Matplotlib y los datos se manipulan con Pan
 
 
 
-![modificar-actualizar libros](https://github.com/user-attachments/assets/17583110-fb7e-4b3a-8cc5-9926ff410166)
-![insertar libros](https://github.com/user-attachments/assets/76fd3666-4c80-4180-84e3-b916dcdaf519)
-![insertar autores](https://github.com/user-attachments/assets/c8047993-395a-4829-898a-ac9d97df8310)
-![eliminar libros](https://github.com/user-attachments/assets/a78aba45-52b0-4e35-8b6e-5bec5c0a86b4)
-![consultar generos](https://github.com/user-attachments/assets/fac5e7a5-31f6-4ead-8bd0-49a1b818aff5)
-![consultar autores](https://github.com/user-attachments/assets/1f892730-73d7-409c-b98e-0e4b18a8a10d)
+
+
+
+
+
+
 
 
